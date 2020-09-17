@@ -50,6 +50,11 @@ app.use(express.static('public'));
 // use morgan to log requests
 app.use(morgan('common'))
 
+// error handling
+app.use((err, req, res, next) => {
+    console.log(err.stack);
+    res.status(500).send('Something is definitely not right');
+});
 // GET requests
 app.get('/', (req, res) => {
     res.send('Welcome to my film club!');
