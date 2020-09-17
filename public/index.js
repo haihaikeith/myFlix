@@ -48,7 +48,7 @@ let topMovies = [
 app.use(express.static('public'));
 
 // use morgan to log requests
-app.use(morgan('common'))
+app.use(morgan('common'));
 
 // error handling
 app.use((err, req, res, next) => {
