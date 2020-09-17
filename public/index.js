@@ -1,4 +1,5 @@
-const express = require('express');
+const express = require('express'),
+      morgan = require('morgan');
 const app = express();
 
 let topMovies = [
@@ -43,8 +44,13 @@ let topMovies = [
   }
 ];
 
-// GET requests
+// use express to serve documentation.html
+app.use(express.static('public'));
 
+// use morgan to log requests
+app.use(morgan('common'))
+
+// GET requests
 app.get('/', (req, res) => {
     res.send('Welcome to my film club!');
 });
