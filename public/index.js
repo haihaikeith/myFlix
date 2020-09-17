@@ -61,7 +61,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/documentation', (req, res) => {
-    res.sendFile('public/documentation.html', {root: __dirname });
+    res.sendFile('/documentation.html', {root: __dirname });
 });
 
 app.get('/movies', (req, res) => {
