@@ -143,9 +143,9 @@ app.get('/topMovies', (req, res) => {
 });
 
 // Get request for a single movie by title
-app.get('/topMovies/:movie/:title', (req, res) => {
+app.get('/movie/:title', (req, res) => {
     res.json(topMovies.find( (topMovie) =>
-    {return topMovies.title === req.params.title}))
+    {return topMovies.movie === req.params.movie}))
 });
 
 // GET request for movie description by name/movie
