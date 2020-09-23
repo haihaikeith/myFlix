@@ -162,13 +162,12 @@ let directors = [
 
 let users = [ 
 {
+  id: 1,
   username : 'iamfirst',
   password : 'iamfirstagain1234',
   email : 'thefirstemail@internet.com',
   birthday : '12.29.1986',
-  favorites: {
-
-  }
+  favorites: []
 }
 ];
 
@@ -179,7 +178,6 @@ app.use(express.static('public'));
 app.use(morgan('common'));
 
 // using bodyParser
-
 app.use(bodyParser.json());
 
 // error handling
@@ -187,6 +185,8 @@ app.use((err, req, res, next) => {
     console.log(err.stack);
     res.status(500).send('Something is definitely not right');
 });
+
+
 // GET request for ALL movies
 app.get('/movies', (req, res) => {
    res.json(movies);  
@@ -200,10 +200,15 @@ app.get('/movies/:title', (req, res) => {
     
 });
 
-// GET request for genre description based on type
+// GET request for all genres
 app.get('/genres', (req, res) => {
-    res.json(genres.find( (genre) => {
-      return genre.type.toLowerCase() === req.params.type.toLowerCase()}))
+  res.json(genres);
+});
+
+// GET request for genre description based on type
+app.get('/genres/:name', (req, res) => {
+  res.json(genres.find( (genre) =>
+    { return genre.type.toLowerCase() === req.params.type.toLowerCase() }));
 });
 
 // GET request for director based on name
@@ -213,8 +218,18 @@ app.get('/directors/:name', (req, res) => {
   }));
 });
 
-// POST request to add new user
+// Gets the list of data about ALL users
+app.get('/users', (req, res) => {
+  res.json(users);
+});
 
+// GET request for data about a single user by username
+app.get('/users/:username', (req, res) => {
+  res.json(users.find( (user) =>
+    { return user.username ===req.params.username  }));
+});
+
+// POST request to add new user
 app.post('/users', (req, res) => {
   let newUser = req.body;
 
@@ -229,9 +244,43 @@ app.post('/users', (req, res) => {
 });
 
 // PUT request to update user info
-app.put("/users/:username", (req, res) => {
-  res.send("Successful User information updated");
+app.put('/users/:username', (req, res) => {
+  res.send('SUCCESSFUL UPDATE');
 });
+
+// POST request to add movie to user favorites
+app.post('/users/:favorites', (req, res) => {
+  let newMovie = req.body;
+
+  if (!newMovie.title) {
+    const message = 'Missing movie title in request body';
+    res.status(400).send(message);
+  } else {
+    newMovie.id = uuid.v4();
+    favorites.push(newMovie);
+    res.status(201).send(newMovie);
+  }
+});
+
+
+// DELETE request to remove user by username 
+app.delete('/users/:id', (req, res) => {
+  let user = users.find( (user) => {
+    return user.username === req.params.username});
+
+  if (user) {
+    users = users.filter(function (obj) {
+      return obj.username !== req.params.username });
+      res.status(201).send('User: ' + user.username + ' is no more.');
+    }
+  });
+
+// error handling middleware, defined last in chain
+app.use(function (err, req, res, next) {
+  console.error(err.stack);
+  res.status(500).send('Something is very wrong');
+  });
+
 
 // listenening for requests
 app.listen(8080, () => {
