@@ -276,7 +276,7 @@ app.post("/users/:username/:favorites", (req, res) => {
 // DELETE request to remove movie from favorites
 app.delete('/users/:username/:favorites/:title', (req, res) => {
   let favorite = favorites.find( (favorite) => {
-    return favorites.title === req.params.title });
+    return favorite.title === req.params.title });
 
     if (favorite) {
       favorites.filter(function(obj) {
