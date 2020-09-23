@@ -162,6 +162,7 @@ let directors = [
 
 let users = [ 
 {
+  id: '1',
   username : 'iamfirst',
   password : 'iamfirstagain1234',
   email : 'thefirstemail@internet.com',
@@ -231,6 +232,35 @@ app.post('/users', (req, res) => {
 // PUT request to update user info
 app.put("/users/:username", (req, res) => {
   res.send("Successful User information updated");
+});
+
+// POST request to update user's favorite movies
+app.post('/users/:username/:favorites', (req, res) =>{
+  let newMovie = req.body;
+
+  if (!newMovie.title) {
+    const message = 'Missing title in request';
+    res.status(404).send(message);
+     } else {
+        newMovie.id = uuid.v4();
+        favorites.push(newMovie);
+        res.status(201).send(newMovie);
+     }
+  });
+
+// DELETE request for removing a movie from user's favorites
+app.delete('/users/:username/favorites/:title', (req, res) =>
+{
+  let favorite = favorites.find((favorite) => {
+    return title === req.params.title 
+  });
+  if (favorite) {
+    favorites.filter( (obj) => {
+      return obj.title !== req.params.title
+    });
+    res.status(201).send(req.params.title + ' is no longer your favorite :(');
+  }
+
 });
 
 // listenening for requests
