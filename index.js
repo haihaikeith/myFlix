@@ -167,9 +167,20 @@ let users = [
   password : 'iamfirstagain1234',
   email : 'thefirstemail@internet.com',
   birthday : '12.29.1986',
-  favorites: []
+  favorites: [
+    
+  ]
 }
 ];
+
+let favorites = [
+  {
+    id: 3,
+    title:'John Wick',
+    description: 'An ex-hit-man comes out of retirement to track down the gangsters that killed his dog and took everything from him.',
+    genre: 'Action'
+  }
+]
 
 // use express to serve documentation.html
 app.use(express.static('public'));
@@ -249,22 +260,34 @@ app.put('/users/:username', (req, res) => {
 });
 
 // POST request to add movie to user favorites
-app.post('/users/:favorites', (req, res) => {
-  let newMovie = req.body;
+app.post("/users/:username/:favorites", (req, res) => {
+  let newFavorite = req.body;
 
-  if (!newMovie.title) {
-    const message = 'Missing movie title in request body';
-    res.status(400).send(message);
+  if (!newFavorite.title) {
+      const message = "Missing movie title in request body";
+      res.status(400).send(message);
   } else {
-    newMovie.id = uuid.v4();
-    favorites.push(newMovie);
-    res.status(201).send(newMovie);
+      newFavorite.id = uuid.v4();
+      favorites.push(newFavorite);
+      res.status(201).send(newFavorite);
   }
 });
 
+// DELETE request to remove movie from favorites
+app.delete('/users/:username/:favorites/:title', (req, res) => {
+  let favorite = favorites.find( (favorite) => {
+    return favorites.title === req.params.title });
+
+    if (favorite) {
+      favorites.filter(function(obj) {
+        return obj.title !== req.params.title  });
+        res.status(201).send(req.params.title + ' is no longer a favorite')
+      }
+    });
+  
 
 // DELETE request to remove user by username 
-app.delete('/users/:id', (req, res) => {
+app.delete('/users/:username', (req, res) => {
   let user = users.find( (user) => {
     return user.username === req.params.username});
 
