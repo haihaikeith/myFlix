@@ -260,7 +260,7 @@ app.put('/users/:username', (req, res) => {
 });
 
 // POST request to add movie to user favorites
-app.post("/users/:username/:favorites", (req, res) => {
+app.post('/movie/:title/users/:username/:favorites',  (req, res) => {
   let newFavorite = req.body;
 
   if (!newFavorite.title) {
@@ -277,9 +277,10 @@ app.post("/users/:username/:favorites", (req, res) => {
 app.delete('/users/:username/:favorites/:title', (req, res) => {
   let favorite = favorites.find( (favorite) => {
     return favorite.title === req.params.title });
+    
 
     if (favorite) {
-      favorites.filter(function(obj) {
+      favorites = favorites.filter(function(obj) {
         return obj.title !== req.params.title  });
         res.status(201).send(req.params.title + ' is no longer a favorite')
       }
@@ -289,7 +290,7 @@ app.delete('/users/:username/:favorites/:title', (req, res) => {
 // DELETE request to remove user by username 
 app.delete('/users/:username', (req, res) => {
   let user = users.find( (user) => {
-    return user.username === req.params.username});
+    return user.username === req.params.username });
 
   if (user) {
     users = users.filter(function (obj) {
@@ -298,7 +299,7 @@ app.delete('/users/:username', (req, res) => {
     }
   });
 
-// error handling middleware, defined last in chain
+// error handling middleware defined last in chain
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Something is very wrong');
