@@ -241,11 +241,11 @@ app.get('/genres', (req, res) => {
       });
     });
 
-// GET request for genre description based on title
-app.get('/Movies/Genre/:Title', (req, res) => {
-  Movies.findOne({'genres.Name': req.params.Name })
-    .then((genre) => {
-      res.status(201).json(genre.Name);
+// Get data about genre by name
+app.get('/Movies/Genre/:Name/', (req, res) => {
+  Movies.findOne({'Genre.Name': req.params.Name })
+    .then((Genre) => {
+      res.status(201).json(Genre.Name + ": " + Genre.Description);
     })
     .catch((err) => {
       console.error(err);
@@ -254,8 +254,8 @@ app.get('/Movies/Genre/:Title', (req, res) => {
 });
 
 // Get data about a director by name
-app.get('/Movies/:Director', (req, res) => {
-  Movies.findOne({ "Director.Name": req.params.Name })
+app.get('/Movies/Director/:Name', (req, res) => {
+  Movies.findOne({ 'Director.Name': req.params.Name })
     .then((movies) => {
       res.status(201).json('Name: ' + movies.Director.Name + 'Bio :' + movies.Director.Bio);
     })
@@ -344,7 +344,7 @@ app.put('/users/:Username', (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, 
     { $set: 
       {
-        Username: req.body.Usernam,
+        Username: req.body.Username,
         Password: req.body.Password,
         Email: req.body.Email,
         Birthday: req.body.Birthday
@@ -362,9 +362,9 @@ app.put('/users/:Username', (req, res) => {
 });
 
 // Add a movie to user's favorites
-app.post('/users/:Username/Movies/:MovieID',  (req, res) => {
+app.post('/users/:Username/:FavoriteMovies/:_id',  (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, 
-    { $push: { FavoriteMovies: req.params.MovieID}
+    { $push: { FavoriteMovies: req.params._id}
   },
   {new: true}, //makes sure updated doc. is returned
   (err, updatedUser) => {
@@ -378,17 +378,21 @@ app.post('/users/:Username/Movies/:MovieID',  (req, res) => {
 });
 
 // DELETE request to remove movie from favorites
-app.delete('/users/:username/movies/favorites', (req, res) => {
-  let favorite = favorites.find( (favorite) => {
-    return favorite.title === req.params.title });
-    
-
-    if (favorite) {
-      favorites = favorites.filter(function(obj) {
-        return obj.title !== req.params.title  });
-        res.status(201).send(req.params.title + ' is no longer a favorite')
-      }
-    });
+app.delete('/users/:Username/:FavoriteMovies/:_id', (req, res) => {
+  Users.findOneAndUpdate({ Username: req.params.Username }, 
+    { $pull: { FavoriteMovies: req.params._id}
+  },
+  {new: true}, //makes sure updated doc. is returned
+  (err, updatedUser) => {
+    if(err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+  } else {
+    res.json(updatedUser);
+    res.status(200).send(req.params._id + ' is off your list.')
+  }
+  });
+});
   
 
 // Delete a user by username

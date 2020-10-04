@@ -1,0 +1,5 @@
+{"_id":1.0,"username":"astrinian","password":"badatmagic123","email":"astrinian@gmail.com","birthday":{"$date":"1988-10-15T00:00:00.000Z"},"favorites":[]}
+{"_id":2.0,"username":"polter","password":"bestatmagic123","email":"polter@gmail.com","birthday":"1989-08-15","favorites":[]}
+{"_id":3.0,"username":"kikiinthekeester","password":"betteratmagic69420","email":"kikiinthekeester@gmail.com","birthday":"1986-12-29","favorites":[]}
+{"_id":5.0,"username":"prettyprincess","password":"morelikeshittyprincess","email":"princess@gmail.com","birthday":"1986-12-29","favorites":[]}
+{"_id":4.0,"username":"velocifaptor","password":"whatsafaptor","email":"velocifaptor@gmail.com","birthday":"1986-12-29","favorites":[]}
