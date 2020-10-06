@@ -3,7 +3,9 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       uuid = require('uuid'), 
       mongoose = require('mongoose'),
-      Models = require('./models.js');
+      Models = require('./models.js'),
+      passport = require('passport');
+                 require('./passport');  
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -18,6 +20,9 @@ app.use(morgan('common'));
 // using bodyParser
 app.use(bodyParser.json());
 
+// imports auth.js for authentication
+let auth = require('./auth')(app);
+
 // error handling
 app.use((err, req, res, next) => {
     console.log(err.stack);
@@ -25,8 +30,11 @@ app.use((err, req, res, next) => {
 });
 
 
+// ENDPOINTS
+
+
 // GET request for ALL movies
-app.get('/Movies', (req, res) => {
+app.get('/Movies', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.find()
   .then((movie) => {
     res.status(201).json(movie);
@@ -38,7 +46,7 @@ app.get('/Movies', (req, res) => {
   });
 
 // Get request for a single movie by title
-app.get('/Movies/:Title', (req, res) => {
+app.get('/Movies/:Title', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ Title: req.params.Title})
     .then((title) => {
       res.json(title);
