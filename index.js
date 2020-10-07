@@ -10,7 +10,8 @@ const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
 const { check, validationResult} = require('express-validator');
-mongoose.connect('mongodb://localhost/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true});
+// mongoose.connect('mongodb://localhost/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true});  --localhost
+mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
 const cors = require('cors');
 const { call } = require('body-parser');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
@@ -290,3 +291,4 @@ const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0',() => {
   console.log('Listening on Port ' + port);
 });
+
