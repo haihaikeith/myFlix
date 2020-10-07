@@ -9,6 +9,7 @@ const express = require('express'),
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
+const { check, validationResult} = require('express-validator');
 mongoose.connect('mongodb://localhost/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true});
 const cors = require('cors');
 const { call } = require('body-parser');
@@ -109,6 +110,8 @@ app.get('/Movies/Director/:Name', passport.authenticate('jwt', {session: false})
     });
 });
 
+
+
 // GET request for all users
 app.get('/users', passport.authenticate('jwt', {session: false}),(req, res) => {
   Users.find()
@@ -133,7 +136,7 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}),(req,
     });
   });
 
-// Add a user
+
 
 /* expected json in this format
 {
@@ -144,7 +147,27 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}),(req,
   Birthday: Date
 }*/
 
-app.post('/users', passport.authenticate('jwt', {session: false}),(req, res) => {
+// Add a user
+
+  // Validation logic here for request
+  //you can either use a chain of methods like .not().isEmpty()
+  //which means "opposite of isEmpty" in plain english "is not empty"
+  //or use .isLength({min: 5}) which means
+  //minimum value of 5 characters are only allowed
+
+app.post('/users', [
+  check('Username', 'Username is required').isLength({min: 5}),
+  check('Username', 'Username contains alphanumeric characters that are not allowed').isAlphanumeric(),
+  check('Password', 'Password is required').not().isEmpty(),
+  check('Email', 'Email does not appear to be kosher').isEmail() ], (req, res) => {
+  // checks validation object for errors
+  let errors = validationResult(req);
+
+  if(!errors.isEmpty()) {
+    return res.status(422).json({errors: errors.array});
+  }
+
+  let hashedPassword = Users.hashedPassword(req.body.Password);
   Users.findOne({ Username: req.body.Username })
     .then((user) => {
       if (user) {
