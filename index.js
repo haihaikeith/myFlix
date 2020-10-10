@@ -49,6 +49,7 @@ app.use((err, req, res, next) => {
 // ENDPOINTS
 
 
+
 // GET request for ALL movies
 app.get('/Movies', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.find()
@@ -167,9 +168,8 @@ app.post('/users', [
   if(!errors.isEmpty()) {
     return res.status(422).json({errors: errors.array});
   }
-
   let hashedPassword = Users.hashedPassword(req.body.Password);
-  Users.findOne({ Username: req.body.Username }) // looks to see if user already exists
+    Users.findOne({ Username: req.body.Username }) // looks to see if user already exists
     .then((user) => {
       if (user) {
         return res.status(400).send(req.body.Username + 'already exists');
@@ -282,7 +282,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (
 // error handling middleware defined last in chain
 app.use(function (err, req, res, next) {
   console.error(err.stack);
-  res.status(500).send('Something is very wrong');
+  res.status(500).send('Something is super wrong');
   });
 
 
