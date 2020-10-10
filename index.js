@@ -3,9 +3,9 @@ const express = require('express'),
       bodyParser = require('body-parser'),
       uuid = require('uuid'), 
       mongoose = require('mongoose'),
-      Models = require('./models.js'),
-      passport = require('passport');
-                 require('./passport');
+      Models = require('./models.js');
+const passport = require('passport')
+                 require('./passport')
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -17,7 +17,7 @@ const { call } = require('body-parser');
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
 app.use(cors({
-  prigin: (origin, callback) => {
+  origin: (origin, callback) => {
     if(!origin) return callback(null, true);
     if(allowedOrigins.indexOf(origin) === -1){ // if a specific origin isn't found on the list
       let message = 'The CORS policy for this app doesn\'t allow access from origin ' + origin;
