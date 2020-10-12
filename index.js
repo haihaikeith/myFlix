@@ -4,17 +4,33 @@ const express = require('express'),
       uuid = require('uuid'), 
       mongoose = require('mongoose'),
       Models = require('./models.js');
+const cors = require('cors');
 const passport = require('passport')
-                 require('./passport')
+require('./passport')
+
+const { check, validationResult} = require('express-validator');
 const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
-const { check, validationResult} = require('express-validator');
-// mongoose.connect('mongodb://localhost/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true});  --localhost
-mongoose.connect(process.env.CONNECTION_URI, {useNewUrlParser: true, useUnifiedTopology: true});
-const cors = require('cors');
-const { call } = require('body-parser');
+
+// TO TEST ON LOCAL HOST
+// mongoose.connect('mongodb://localhost/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true});  --localhost    
+
+// HEROKU AND ATLAS DB CONNECTION
+mongoose.connect(process.env.CONNECTION_URI, {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true}); 
+
+// using bodyParser
+app.use(bodyParser.json());
+// use morgan to log requests
+app.use(morgan('common'));
+// imports auth.js for authentication
+let auth = require('./auth')(app);
+// WHITELISTED DOMAINS
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
+
+// const { call } = require('body-parser');  // not sure what this is code is for
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -27,28 +43,11 @@ app.use(cors({
   }
 }));
 
-// use express to serve documentation.html
-app.use(express.static('public'));
-
-// use morgan to log requests
-app.use(morgan('common'));
-
-// using bodyParser
-app.use(bodyParser.json());
-
-// imports auth.js for authentication
-let auth = require('./auth')(app);
-
-// error handling
-app.use((err, req, res, next) => {
-    console.log(err.stack);
-    res.status(500).send('Something is definitely not right');
+app.get('/', (req, res) => {
+  res.send('<h1>' + 'Welcome to myFlix Web App!' + '</h1>')
 });
 
-
 // ENDPOINTS
-
-
 
 // GET request for ALL movies
 app.get('/Movies', passport.authenticate('jwt', {session: false}), (req, res) => {
@@ -66,7 +65,7 @@ app.get('/Movies', passport.authenticate('jwt', {session: false}), (req, res) =>
 app.get('/Movies/:Title', passport.authenticate('jwt', {session: false}), (req, res) => {
   Movies.findOne({ Title: req.params.Title})
     .then((title) => {
-      res.json(title);
+      res.status(201).json(title);
     })
     .catch((err) => {
       console.error(err);
@@ -158,39 +157,37 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}),(req,
   //minimum value of 5 characters are only allowed
 
 app.post('/users', [
-  check('Username', 'Username is required').isLength({min: 5}),
-  check('Username', 'Username contains alphanumeric characters that are not allowed').isAlphanumeric(),
-  check('Password', 'Password is required').not().isEmpty(),
-  check('Email', 'Email does not appear to be kosher').isEmail() ], (req, res) => {
-  // checks validation object for errors
-  let errors = validationResult(req);
-
-  if(!errors.isEmpty()) {
-    return res.status(422).json({errors: errors.array});
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains alphanumeric characters that are not allowed').  isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be kosher').isEmail() ], (req, res) => {
+      let errors = validationResult(req);  // checks validation object for errors
+        if(!errors.isEmpty()) {
+        return res.status(422).json({errors: errors.array});
   }
-  let hashedPassword = Users.hashedPassword(req.body.Password);
-    Users.findOne({ Username: req.body.Username }) // looks to see if user already exists
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
-      } else {
-        Users
-          .create({
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday
+      let hashedPassword = Users.hashedPassword(req.body.Password);
+        Users.findOne({ Username: req.body.Username }) // looks to see if user already exists
+          .then((user) => {
+            if (user) {
+            return res.status(400).send(req.body.Username + 'already exists');
+            } else {
+              Users.create({
+                Username: req.body.Username,
+                Password: hashedPassword,
+                Email: req.body.Email,
+                Birthday: req.body.Birthday
           })
-          .then((user) => {res.status(201).json(user) })
-        .catch((error) => {
-          console.error(error);
-          res.status(500).send('Error: ' + error);
-        })
-    }
-})
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
+            .then((user) => {
+              res.status(201).json(user) })
+            .catch((error) => {
+              console.error(error);
+              res.status(500).send('Error: ' + error);
+            })
+        }
+    })
+          .catch((error) => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
     });
   });
 
@@ -208,7 +205,7 @@ app.post('/users', [
 
 }*/
 
-app.put('/users/:Username', passport.authenticate('jwt', {session: false}),(req, res) => {
+app.put('/users/:Username', passport.authenticate('jwt', {session: false}), (req, res) => {
   Users.findOneAndUpdate({ Username: req.params.Username }, 
     { $set: 
       {
@@ -241,6 +238,7 @@ app.post('/users/:Username/:FavoriteMovies/:_id', passport.authenticate('jwt', {
       res.status(500).send('Error: ' + err);
   } else {
     res.json(updatedUser);
+    res.status(200).send(req.params._id + ' is now in your Favorites.')
   }
   });
 });
@@ -279,12 +277,18 @@ app.delete('/users/:Username', passport.authenticate('jwt', {session: false}), (
     });
 });
 
-// error handling middleware defined last in chain
-app.use(function (err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something is super wrong');
-  });
+// use express to serve documentation.html
+app.use(express.static('public'));
 
+// error handling
+app.use((err, req, res, next) => {
+  if(err) {
+    console.log(err.stack);
+    res.status(500).send('Something is definitely not right');
+  } else {
+    console.log(err)
+  }
+});
 
 // listenening for requests
 const port = process.env.PORT || 8080;
