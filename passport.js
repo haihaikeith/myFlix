@@ -1,4 +1,4 @@
-const { call } = require('body-parser');
+// const { call } = require('body-parser'); //second time seeing this. not sure what it is
 
 const passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
@@ -22,7 +22,7 @@ passport.use(new LocalStrategy({
             
             if (!user) {
                 console.log('incorrect username');
-                return callback(null, false, {message: 'Incorrect Username and/or Password'});
+                return callback(null, false, {message: 'Incorrect Username'});
             }
 
             if (!user.validatePassword(password)) {
