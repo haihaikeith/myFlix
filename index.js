@@ -158,7 +158,7 @@ app.get('/users/:Username', passport.authenticate('jwt', {session: false}),(req,
 
 app.post('/users', [
     check('Username', 'Username is required').isLength({min: 5}),
-    check('Username', 'Username contains alphanumeric characters that are not allowed').  isAlphanumeric(),
+    check('Username', 'Username contains alphanumeric characters that are not allowed').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be kosher').isEmail() ], (req, res) => {
       let errors = validationResult(req);  // checks validation object for errors
