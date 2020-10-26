@@ -29,7 +29,7 @@ app.use(morgan('common'));
 // imports auth.js for authentication
 let auth = require('./auth')(app);
 // WHITELISTED DOMAINS
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234'];
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', 'https://filmsforme.herokuapp.com'];
 
 // const { call } = require('body-parser');  // not sure what this is code is for
 

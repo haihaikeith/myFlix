@@ -1,15 +1,20 @@
 import React from 'react';
 import axios from 'axios';
 import { render } from 'react-dom/cjs/react-dom.development';
+import { MovieCard } from '../movie-card/movie-card';
+import { MovieView } from '../movie-view/movie-view';
 
-class MainView extends React.Component {
+export class MainView extends React.Component {
   constructor() {
     // call the superclass constructor
     // so react can initialize it
     super();
 
     // initialize the state to an empty object to destructure later
-    this.state = {};
+    this.state = {
+      movies: null,
+      selectedMovie: null
+    };
   }
 
   // this overrides the render() method of the superclass
@@ -19,12 +24,11 @@ class MainView extends React.Component {
       <div className="main-view"></div>
     );
   }
-}
 
-export class MainView extends React.Component {
+
   // one of the "hooks" available in a react component
   componentDidMount() {
-    axios.get('<my-api-endpoint/movies>')
+    axios.get('<https://filmsforme.herokuapp.com/movies>')
       .then(response => {
         // assign the result to the state
         this.setState({
@@ -48,9 +52,12 @@ export class MainView extends React.Component {
 
     return (
       <div className="main-view">
-        { movies.map(movie => (
-          <div className="movie-card" key={movie._id}>{movie.Title}</div>
-        ))}
+        {selectedMovie
+          ? <MovieView movie={selectedMovie} />
+          : movies.map(movie => (
+            <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClic(movie)} />
+          ))
+        }
       </div>
     );
   }
