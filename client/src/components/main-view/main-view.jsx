@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import { render } from 'react-dom/cjs/react-dom.development';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 
@@ -55,7 +54,7 @@ export class MainView extends React.Component {
         {selectedMovie
           ? <MovieView movie={selectedMovie} />
           : movies.map(movie => (
-            <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClic(movie)} />
+            <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
           ))
         }
       </div>
