@@ -5,26 +5,21 @@ import { MovieView } from '../movie-view/movie-view';
 
 export class MainView extends React.Component {
   constructor() {
-    // call the superclass constructor
-    // so react can initialize it
     super();
 
-    // initialize the state to an empty object to destructure later
     this.state = {
       movies: null,
-      selectedMovie: null
+      selectedMovie: null,
     };
   }
-
-
-
-  // one of the "hooks" available in a react component
+  // One of the "hooks" available in a React Component
   componentDidMount() {
-    axios.get('<https://filmsforme.herokuapp.com/Movies>')
-      .then(response => {
-        // assign the result to the state
+    axios
+      .get('https://myflixwebapp.herokuapp.com/Movies')
+      .then((response) => {
+        // Assign the result to the state
         this.setState({
-          movies: response.data
+          movies: response.data,
         });
       })
       .catch(function (error) {
@@ -32,10 +27,15 @@ export class MainView extends React.Component {
       });
   }
 
+  onMovieClick(movie) {
+    this.setState({
+      selectedMovie: movie
+    });
+  }
+
+
   render() {
-    // If the state isn't initialized, this will throw on runtime
-    // before the data is initially loaded
-    const { movies } = this.state;
+    const { movies, selectedMovie } = this.state;
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
