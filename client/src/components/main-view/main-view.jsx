@@ -20,7 +20,7 @@ export class MainView extends React.Component {
 
   // one of the "hooks" available in a react component
   componentDidMount() {
-    axios.get('<https://filmsforme.herokuapp.com/movies>')
+    axios.get('<https://filmsforme.herokuapp.com/Movies>')
       .then(response => {
         // assign the result to the state
         this.setState({
