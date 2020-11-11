@@ -9,7 +9,7 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie } = this.props;
+    const { movie, onClick } = this.props;
 
     if (!movie) return null;
 
@@ -33,7 +33,12 @@ export class MovieView extends React.Component {
           <span className="label">Director: </span>
           <span className="value">{movie.Director.Name}</span>
         </div>
+
+        <div><button onClick={() => onClick()}>Back</button>
+        </div>
       </div>
+
+
 
 
     );
