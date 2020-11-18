@@ -29,7 +29,6 @@ export function LoginView(props) {
               <Form.Control
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className='Control'
                 type='text'
                 placeholder='Username'
               />
@@ -39,7 +38,6 @@ export function LoginView(props) {
               <Form.Control
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className='Control2'
                 type='password'
                 placeholder='Password'
               />
@@ -52,6 +50,16 @@ export function LoginView(props) {
                 </Button>
             </Col>
           </Row>
+          <Row><h4>Need to register?</h4></Row>
+          <Col>
+            <Row>
+              <Button variant='link'>
+                Register Here
+              </Button>
+            </Row>
+          </Col>
+
+
         </Form.Group>
       </Form>
     </Container>
