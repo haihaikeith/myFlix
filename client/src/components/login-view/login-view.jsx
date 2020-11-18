@@ -56,12 +56,13 @@ export function LoginView(props) {
               <Button variant='link'>
                 Register Here
               </Button>
+
             </Row>
           </Col>
 
 
         </Form.Group>
       </Form>
-    </Container>
+    </Container >
   );
 }
