@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Row, Col, Form } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
-import axios from 'axios';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import './registration-view.scss';
 
 export function RegistrationView(props) {
@@ -13,21 +15,9 @@ export function RegistrationView(props) {
   //Allows to login with any credentials
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post('https://myflixwebapp.herokuapp.com/users', {
-        Username: username,
-        Password: password,
-        Email: email,
-        Birthday: birthday,
-      })
-      .then((response) => {
-        const data = response.data;
-        console.log(data);
-        window.open('/', '_self'); // '_self' opens in same window
-      })
-      .catch((e) => {
-        console.log('User not created');
-      });
+    console.log(username, password, email, birthday);
+    // Send a request to the server for authentication then call props.onLoggedIn(username)
+    props.onLoggedIn(username);
   };
 
   return (
