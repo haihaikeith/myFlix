@@ -53,7 +53,7 @@ export function LoginView(props) {
           <Row><h4>Need to register?</h4></Row>
           <Col>
             <Row>
-              <Button variant='link'>
+              <Button variant='link' variant='dark' className='register-button' onClick={''}>
                 Register Here
               </Button>
             </Row>
@@ -63,5 +63,7 @@ export function LoginView(props) {
         </Form.Group>
       </Form>
     </Container >
+
+
   );
 }

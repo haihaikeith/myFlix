@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './registration-view.scss';
+import axios from 'axios';
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
@@ -16,16 +17,16 @@ export function RegistrationView(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(username, password, email, birthday);
-    // Send a request to the server for authentication then call props.onLoggedIn(username)
+    /* Send a request to the server for authentication */
+    /* then call props.onLoggedIn(username) */
     props.onLoggedIn(username);
   };
 
+
   return (
-    <Container className='container'>
-      <br />
-      <br />
+    <Container className='registration'>
       <Form>
-        <Form.Group className='registration'>
+        <Form.Group className='registration-form'>
           <h4>Please enter the required information</h4>
           <Row>
             <Col>
