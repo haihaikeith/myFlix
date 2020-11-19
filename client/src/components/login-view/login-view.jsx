@@ -53,7 +53,7 @@ export function LoginView(props) {
           <Row><h4>Need to register?</h4></Row>
           <Col>
             <Row>
-              <Button variant='link' variant='dark' className='register-button' onClick={''}>
+              <Button variant='link' variant='dark' className='register-button' onClick={this.props.toggleRegistrationPage}>
                 Register Here
               </Button>
             </Row>

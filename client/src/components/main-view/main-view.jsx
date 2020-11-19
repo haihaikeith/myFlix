@@ -12,7 +12,8 @@ export class MainView extends React.Component {
     this.state = {
       movies: null,
       selectedMovie: null,
-      user: null
+      user: null,
+      showRegistrationPage: false
     };
   }
   // One of the "hooks" available in a React Component
@@ -42,11 +43,15 @@ export class MainView extends React.Component {
     });
   }
 
-  render() {
-    const { movies, selectedMovie, user } = this.state;
+  toggleRegistrationPage = () => {
+    this.setState({ showRegistrationPage: !this.state.showRegistrationPage })
+  }
 
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
-    if (!user) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
+  render() {
+    const { movies, selectedMovie, user, showRegistrationPage } = this.state;
+
+    if (!user && !showRegistrationPage) return <LoginView toggleRegistrationPage={this.toggleRegistrationPage} onLoggedIn={user => this.onLoggedIn(user)} />;
+    if (!user && showRegistrationPage) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
