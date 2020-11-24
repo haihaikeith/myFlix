@@ -71,7 +71,7 @@ export class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user, showRegistrationPage } = this.state;
+    const { movies, user, showRegistrationPage } = this.state;
 
 
 
@@ -83,6 +83,10 @@ export class MainView extends React.Component {
         <div className="main-view">
           <Route exact path="/" render={() => {
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+
+            if (!user && !showRegistrationPage) return <LoginView toggleRegistrationPage={this.toggleRegistrationPage} onLoggedIn={user => this.onLoggedIn(user)} />;
+
+            if (!user && showRegistrationPage) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
 
             return movies.map(m => <MovieCard key={m._id} movie={m} />)
           }
