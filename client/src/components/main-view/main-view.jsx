@@ -73,7 +73,9 @@ export class MainView extends React.Component {
   render() {
     const { movies, user, showRegistrationPage } = this.state;
 
+    if (!user && !showRegistrationPage) return <LoginView toggleRegistrationPage={this.toggleRegistrationPage} onLoggedIn={user => this.onLoggedIn(user)} />;
 
+    if (!user && showRegistrationPage) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
@@ -84,9 +86,6 @@ export class MainView extends React.Component {
           <Route exact path="/" render={() => {
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
 
-            if (!user && !showRegistrationPage) return <LoginView toggleRegistrationPage={this.toggleRegistrationPage} onLoggedIn={user => this.onLoggedIn(user)} />;
-
-            if (!user && showRegistrationPage) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
 
             return movies.map(m => <MovieCard key={m._id} movie={m} />)
           }

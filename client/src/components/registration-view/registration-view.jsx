@@ -12,6 +12,7 @@ export function RegistrationView(props) {
   const [email, setEmail] = useState('');
   const [birthday, setBirthday] = useState('');
 
+  //Allows to login with any credentials
   const handleSubmit = (e) => {
     e.preventDefault();
     axios.post('https://myflixwebapp.herokuapp.com/users', {
@@ -82,7 +83,6 @@ export function RegistrationView(props) {
                 <Button type='button' variant='dark' onClick={handleSubmit}>
                   Register
               </Button>
-
               </Col>
             </Row>
           </Form.Group>
