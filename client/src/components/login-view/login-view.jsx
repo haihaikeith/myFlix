@@ -7,6 +7,8 @@ import Container from 'react-bootstrap/Container';
 import './login-view.scss';
 import axios from 'axios';
 
+import { Link } from 'react-router-dom';
+
 export function LoginView(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -63,9 +65,11 @@ export function LoginView(props) {
           <Row><h4>Need to register?</h4></Row>
           <Col>
             <Row>
-              <Button variant='link' variant='dark' className='register-button' onClick={props.toggleRegistrationPage}>
-                Register Here
+              <Link to="/registration">
+                <Button variant='link' variant='dark' className='register-button' onClick={props.toggleRegistrationPage}>
+                  Register Here
               </Button>
+              </Link>
             </Row>
           </Col>
 
