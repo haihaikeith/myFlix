@@ -18,17 +18,15 @@ export class MainView extends React.Component {
   }
   // One of the "hooks" available in a React Component
   componentDidMount() {
-    axios.get('https://myflixwebapp.herokuapp.com/Movies')
-      .then((response) => {
-        // Assign the result to the state
-        this.setState({
-          movies: response.data,
-        });
-      })
-      .catch(function (error) {
-        console.log(error);
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
       });
+      this.getMovies(accessToken);
+    }
   }
+
   getMovies(token) {
     axios.get('https://myflixwebapp.herokuapp.com/Movies', {
       headers: { Authorization: `Bearer${token}` }
@@ -61,6 +59,14 @@ export class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
+  onLoggedOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.setState({
+      user: null
+    });
+  }
+
   toggleRegistrationPage = () => {
     this.setState({ showRegistrationPage: !this.state.showRegistrationPage })
   }
@@ -82,6 +88,7 @@ export class MainView extends React.Component {
             <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)} />
           ))
         }
+        <Button type="button" variant="dark" onClick={this.onLoggedOut}></Button>
       </div>
     );
   }
