@@ -29,6 +29,20 @@ export class MainView extends React.Component {
         console.log(error);
       });
   }
+  getMovies(token) {
+    axios.get('https://myflixwebapp.herokuapp.com/Movies', {
+      headers: { Authorization: `Bearer${token}` }
+    })
+      .then(response => {
+        // Assign the result to the state
+        this.setState({
+          movies: response.data
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   onMovieClick(movie) {
     this.setState({
@@ -42,20 +56,7 @@ export class MainView extends React.Component {
       user: authData.user.Username
     });
 
-    getMovies(token); {
-      axios.get('https://myflixwebapp.herokuapp.com/Movies', {
-        headers: { Authorization: `Bearer${token}` }
-      })
-        .then(response => {
-          // Assign the result to the state
-          this.setState({
-            movies: response.data
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
+
 
 
     localStorage.setItem('token', authData.token);
