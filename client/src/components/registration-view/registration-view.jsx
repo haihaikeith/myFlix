@@ -5,7 +5,6 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import './registration-view.scss';
-import axios from 'axios';
 
 export function RegistrationView(props) {
   const [username, setUsername] = useState('');
