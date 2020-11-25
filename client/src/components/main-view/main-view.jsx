@@ -21,7 +21,7 @@ export class MainView extends React.Component {
   }
 
   getMovies(token) {
-    axios.get('https://myflixwebapp.herokuapp.com/movies', {
+    axios.get('https://myflixwebapp.herokuapp.com/Movies', {
       headers: { Authorization: `Bearer${token}` }
     })
       .then(response => {
@@ -47,7 +47,7 @@ export class MainView extends React.Component {
   }
 
 
-  onLoggedIn(authData) {
+  onLoggedIn(authData) {  //creates user token and sets it in localStorage on browser 
     console.log(authData);
     this.setState({
       user: authData.user.Username
@@ -58,7 +58,7 @@ export class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
-  onLoggedOut() {
+  onLoggedOut() {  // deletes user/token from browser storage
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.setState({
@@ -83,7 +83,7 @@ export class MainView extends React.Component {
     return (
       <Router>
         <div className="main-view">
-          <Route exact path="/" render={() => {
+          <Route exact path="/" render={() => { // goes to login view if not logged in
             if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
             return movies.map(m => <MovieCard key={m._id} movie={m} />)
           }
