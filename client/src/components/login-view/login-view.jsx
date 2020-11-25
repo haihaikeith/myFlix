@@ -76,7 +76,7 @@ export function LoginView(props) {
 
         </Form.Group>
       </Form>
-    </Container >
+    </Container>
 
 
   );

@@ -41,7 +41,7 @@ export class MovieView extends React.Component {
 
         <div><Button className="back-button" variant="dark" onClick={() => onClick(movie)}>Back</Button>
         </div>
-      </div >
+      </div>
 
 
 
