@@ -24,14 +24,6 @@ mongoose.connect(process.env.CONNECTION_URI, {
 
 // using bodyParser
 app.use(bodyParser.json());
-// use morgan to log requests
-app.use(morgan('common'));
-// imports auth.js for authentication
-let auth = require('./auth')(app);
-// WHITELISTED DOMAINS
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', '*'];
-
-// const { call } = require('body-parser');  // not sure what this is code is for
 
 app.use(cors({
   origin: (origin, callback) => {
@@ -44,11 +36,20 @@ app.use(cors({
   }
 }));
 
+// use morgan to log requests
+app.use(morgan('common'));
+
+// imports auth.js for authentication
+let auth = require('./auth')(app);
+
+// WHITELISTED DOMAINS
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', '*'];
+
+// ENDPOINTS
+
 app.get('/', (req, res) => {
   res.send('<h1>' + 'Welcome to myFlix Web App!' + '</h1>')
 });
-
-// ENDPOINTS
 
 // GET request for ALL movies
 app.get('/Movies', passport.authenticate('jwt', { session: false }), (req, res) => {
