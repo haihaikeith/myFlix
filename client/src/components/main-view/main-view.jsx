@@ -20,9 +20,20 @@ export class MainView extends React.Component {
     };
   }
 
+  // One of the "hooks" available in a React Component
+  componentDidMount() {
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
+      this.setState({
+        user: localStorage.getItem('user')
+      });
+      this.getMovies(accessToken)
+    }
+  }
+
   getMovies(token) {
     axios.get('https://myflixwebapp.herokuapp.com/movies', {
-      headers: { Authorization: `Bearer${token}` }
+      headers: { Authorization: `Bearer ${token}` }
     })
       .then(response => {
         // Assign the result to the state
@@ -35,18 +46,6 @@ export class MainView extends React.Component {
       });
   }
 
-  // One of the "hooks" available in a React Component
-  componentDidMount() {
-    let accessToken = localStorage.getItem('token');
-    if (accessToken !== null) {
-      this.setState({
-        user: localStorage.getItem('user')
-      });
-      this.getMovies(accessToken);
-    }
-  }
-
-
   onLoggedIn(authData) {  //creates user token and sets it in localStorage on browser 
     console.log(authData);
     this.setState({
@@ -55,7 +54,10 @@ export class MainView extends React.Component {
 
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
-    this.getMovies(authData.token);
+    this.getMovies(authData.token)
+      .catch(function (error) {
+        console.log(error)
+      });
   }
 
   onLoggedOut() {  // deletes user/token from browser storage
@@ -73,9 +75,15 @@ export class MainView extends React.Component {
   render() {
     const { movies, user, showRegistrationPage } = this.state;
 
-    if (!user && !showRegistrationPage) return <LoginView toggleRegistrationPage={this.toggleRegistrationPage} onLoggedIn={user => this.onLoggedIn(user)} />;
+    if (!user && !showRegistrationPage) return <LoginView toggleRegistrationPage={this.toggleRegistrationPage} onLoggedIn={user => this.onLoggedIn(user)
+      .catch(function (error) {
+        console.log(error);
+      })} />
 
-    if (!user && showRegistrationPage) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
+    if (!user && showRegistrationPage) return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)
+      .catch(function (error) {
+        console.log(error);
+      })} />;
 
     // Before the movies have been loaded
     if (!movies) return <div className="main-view" />;
