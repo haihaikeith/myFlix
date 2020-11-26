@@ -28,8 +28,7 @@ export function LoginView(props) {
       })
       .catch(e => {
         console.log('no such user')
-      })
-      .catch(function (error) {
+      }).catch(function (error) {
         console.log(error);
       });
   };
