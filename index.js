@@ -13,6 +13,9 @@ const app = express();
 const Movies = Models.Movie;
 const Users = Models.User;
 
+// WHITELISTED DOMAINS
+let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', '*'];
+
 // TO TEST ON LOCAL HOST
 // mongoose.connect('mongodb://localhost/myFlixDB', {useNewUrlParser: true, useUnifiedTopology: true});  --localhost    
 
@@ -42,9 +45,6 @@ app.use(morgan('common'));
 // imports auth.js for authentication
 let auth = require('./auth')(app);
 
-// WHITELISTED DOMAINS
-let allowedOrigins = ['http://localhost:8080', 'http://testsite.com', 'http://localhost:1234', '*'];
-
 // ENDPOINTS
 
 app.get('/', (req, res) => {
@@ -52,7 +52,7 @@ app.get('/', (req, res) => {
 });
 
 // GET request for ALL movies
-app.get('/Movies', passport.authenticate('jwt', { session: false }), (req, res) => {
+app.get('/movies', passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.find()
     .then((movie) => {
       res.status(201).json(movie);

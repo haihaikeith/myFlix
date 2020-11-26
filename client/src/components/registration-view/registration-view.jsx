@@ -16,7 +16,7 @@ export function RegistrationView(props) {
   //Allows to login with any credentials
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('https://myflixwebapp.herokuapp.com/Users', {
+    axios.post('https://myflixwebapp.herokuapp.com/users', {
       Username: username,
       Password: password,
       Email: email,
@@ -25,7 +25,7 @@ export function RegistrationView(props) {
       .then(response => {
         const data = response.data;
         console.log(data);
-        window.open('/', '_self');
+        window.open('/', '_self'); // _self opens page in current tab
       })
       .catch(e => {
         console.log('Error registering user')
