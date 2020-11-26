@@ -43,11 +43,6 @@ export class MovieView extends React.Component {
           <Button className="back-button" variant="link" variant="dark">Back</Button>
         </Link>
       </div>
-
-
-
-
-
     );
   }
 }

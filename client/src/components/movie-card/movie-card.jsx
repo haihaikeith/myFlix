@@ -23,10 +23,10 @@ export class MovieCard extends React.Component {
             <Link to={`/movies/${movie._id}`}>
               <Button variant="link" variant="dark">Open</Button>
             </Link>
-            <Link to={`/directors/${movie.Director.Name}`}>
+            <Link to={`/Director/${movie.Director.Name}`}>
               <Button variant="link" variant="dark">Director</Button>
             </Link>
-            <Link to={`/genres/${movie.Genre.Name}`}>
+            <Link to={`/Genre/${movie.Genre.Name}`}>
               <Button variant="link" variant="dark">Genre</Button>
             </Link>
           </Card.Body>
