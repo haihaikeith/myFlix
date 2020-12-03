@@ -9,22 +9,27 @@ import { Link } from "react-router-dom";
 
 export class GenreView extends React.Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
     this.state = {};
   }
 
   render() {
-    const { movie, Genre } = this.props;
+    const { movies, Genre } = this.props;
+
+    if (!movies) return null;
 
     return (
-      <div>
-        <Container>
+      <div className="genre-view">
+        <Container className="genre-card">
           <Col>
-            <Card style={{ width: '20rem', margin: '5rem' }}>
+            <Card style={{ width: '20rem', margin: '15px' }}>
               <Card.Body>
-                <Card.Title><h1>{Genre.Name}</h1></Card.Title>
-                <Card.Text>{Genre.Description}</Card.Text>
+                <Card.Title><h1>{props.movies.genre.name}</h1></Card.Title>
+                <Card.Text>{props.genre.description}</Card.Text>
+                <br></br>
+                <br></br>
                 <Link to='/'>
                   <Button variant="link" variant="dark">Back</Button>
                 </Link>
@@ -36,3 +41,4 @@ export class GenreView extends React.Component {
     )
   }
 }
+

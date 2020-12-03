@@ -23,10 +23,10 @@ export class MovieCard extends React.Component {
             <Link to={`/movies/${movie._id}`}>
               <Button variant="link" variant="dark">Open</Button>
             </Link>
-            <Link to={`/Director/${movie.Director.Name}`}>
+            <Link to={`/movies/Director/${movie.Director.Name}`}>
               <Button variant="link" variant="dark">Director</Button>
             </Link>
-            <Link to={`/Genre/${movie.Genre.Name}`}>
+            <Link to={`/movies/Genre/${movie.Genre.Name}`}>
               <Button variant="link" variant="dark">Genre</Button>
             </Link>
           </Card.Body>
@@ -39,8 +39,16 @@ export class MovieCard extends React.Component {
 MovieCard.propTypes = {
   movie: PropTypes.shape({
     Title: PropTypes.string.isRequired,
-
-    ImagePath: PropTypes.string.isRequired
-  }).isRequired
-
+    Description: PropTypes.string.isRequired,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string,
+      Description: PropTypes.string
+    }),
+    Director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+      Bio: PropTypes.string,
+      Image: PropTypes.string
+    }),
+    ImagePath: PropTypes.string.isRequired,
+  })
 };
