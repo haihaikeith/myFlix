@@ -1,4 +1,4 @@
-class MainView extends React.Component {
+export class MainView extends React.Component {
   constructor(){
     //call the superclass constructor so react can initialize it
     super();
