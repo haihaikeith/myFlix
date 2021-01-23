@@ -11,7 +11,7 @@ class MainView extends React.Component {
   
     //one of the hooks availabe in a react component
     componentDidMount(){
-      axios.get('<my-api-endpoin/movies>')
+      axios.get('<my-api-endpoint/movies>')
       .then(response => {
         //assign the result to the state
         this.setState({
