@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
-import './login-view.scss';
+// import './login-view.scss';
 import axios from 'axios';
 
 // import { BrowserRouter as Router, Route } from "react-router-dom";

@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
-import './genre-view.scss'
+// import './genre-view.scss'
 
 import { Link } from "react-router-dom";
 

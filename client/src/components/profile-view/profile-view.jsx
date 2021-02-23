@@ -3,7 +3,7 @@ import Button from 'react-bootstrap';
 import Col from 'react-bootstrap';
 import Container from 'react-bootstrap';
 import { User } from '../../../../models';
-import './profile-view.scss';
+// import './profile-view.scss';
 
 export class ProfileView extends React.Component {
 
